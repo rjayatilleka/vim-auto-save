@@ -1,8 +1,15 @@
 " Turn auto_save on by default for each buffer
-autocmd BufEnter * if !exists('b:auto_save') | let b:auto_save = 1 | endif
+function! s:SetAutoSaveStartingValue()
+  if (@% == "") || (&buftype == 'nofile')
+    let b:auto_save = 0
+  else
+    let b:auto_save = 1
+  endif
+endfunction
+autocmd BufEnter * if !exists('b:auto_save') | call s:SetAutoSaveStartingValue() | endif
 
 " Turn auto save on or off
-function! AutoSaveToggle()
+function! s:AutoSaveToggle()
   let b:auto_save = !b:auto_save
   if b:auto_save
     echo "Auto Save is ON"
@@ -11,10 +18,10 @@ function! AutoSaveToggle()
   endif
 endfunction
 
-command! AutoSaveToggle call AutoSaveToggle()
+command! AutoSaveToggle call s:AutoSaveToggle()
 
 " Save and update auto save tick
-function! AutoSave()
+function! s:AutoSave()
   if b:auto_save && &modified
     if &buftype ==# 'acwrite'
       do BufWriteCmd
@@ -26,5 +33,5 @@ function! AutoSave()
 endfunction
 
 " Autocmds
-autocmd InsertLeave * call AutoSave()
-autocmd CursorHold * call AutoSave()
+autocmd InsertLeave * call s:AutoSave()
+autocmd CursorHold * call s:AutoSave()
