@@ -24,12 +24,12 @@ command! AutoSaveToggle call s:AutoSaveToggle()
 function! s:AutoSave()
   if exists('b:auto_save') && b:auto_save && &modified
     if &buftype ==# 'acwrite'
-      do BufWriteCmd
+      doautocmd BufWriteCmd
     else
       silent w
     endif
     let b:autosavetick = b:changedtick
-    execute 'do AutoSavePost' @%
+    doautocmd User AutoSavePost
   endif
 endfunction
 
