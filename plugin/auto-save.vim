@@ -22,7 +22,7 @@ command! AutoSaveToggle call s:AutoSaveToggle()
 
 " Save and update auto save tick
 function! s:AutoSave()
-  if b:auto_save && &modified
+  if exists('b:auto_save') && b:auto_save && &modified
     if &buftype ==# 'acwrite'
       do BufWriteCmd
     else
