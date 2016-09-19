@@ -29,6 +29,7 @@ function! s:AutoSave()
       silent w
     endif
     let b:autosavetick = b:changedtick
+    execute 'do AutoSavePost' @%
   endif
 endfunction
 
